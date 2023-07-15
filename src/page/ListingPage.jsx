@@ -58,7 +58,7 @@ const ListingPage = () => {
     // Fetch jobs list from the API endpoint
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('https://ceylonscrown.com/trep/GetCountryList');
+        const response = await axios.get('https://ceylonscrown.com/trep/JobsList');
         console.log(response.data);
         //  setJobs(response.data);
         setJobs(rows);

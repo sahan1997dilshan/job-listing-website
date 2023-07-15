@@ -41,8 +41,40 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+
+  const [firstnameError, setFirstNameError] = useState(false);
+  const [lastnameError, setLastNameError] = useState(false);
+  const [countryError, setCountryError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const validateEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!firstname || !lastname || !country || !email || !password) {
+      if (!firstname)
+        setFirstNameError(true);
+      if (!lastname)
+        setLastNameError(true);
+      if (!country)
+        setCountryError(true);
+      if (!password)
+        setPasswordError(true);
+      if (!email)
+        setEmailError(true);
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError(true);
+      return;
+  }
+
 
     const formData = {
       firstname,
@@ -50,37 +82,37 @@ export default function Register() {
       country,
       city,
       email,
-      password, 
-  };
+      password,
+    };
 
 
-  fetch('https://ceylonscrown.com/trep/Register', {
-    method: 'POST',
-    headers: {
+    fetch('https://ceylonscrown.com/trep/Register', {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(formData),
-})
-    .then((response) => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Faild Registration');
-        }
+      },
+      body: JSON.stringify(formData),
     })
-    .then((data) => {
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Faild Registration');
+        }
+      })
+      .then((data) => {
         console.log('Registered successfully:', data);
         // Perform any further actions upon successful job publication
         navigate('/login'); // Redirect to the jobpost or desired location
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error('Error occurred during job publication:', error);
         // Handle error or failed job publication
-    });
+      });
   };
 
 
-  
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -111,6 +143,7 @@ export default function Register() {
                   id="firstName"
                   label="First Name"
                   onChange={(e) => setFirstName(e.target.value)}
+                  helperText={firstnameError ?(<span style={{color:'red'}}>Complete First name</span>):''}
                   autoFocus
                 />
               </Grid>
@@ -124,6 +157,7 @@ export default function Register() {
                   name="lastName"
                   autoComplete="family-name"
                   onChange={(e) => setLastName(e.target.value)}
+                  helperText={lastnameError ?(<span style={{color:'red'}}>Complete Last name</span>):''}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -135,17 +169,19 @@ export default function Register() {
                   name="country"
                   autoComplete="country"
                   onChange={(e) => setCountry(e.target.value)}
+                  helperText={countryError ?(<span style={{color:'red'}}>Complete Country name</span>):''}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  optional 
+                  optional
                   fullWidth
                   id="city"
                   label="City"
                   name="city"
                   autoComplete="city"
                   onChange={(e) => setCity(e.target.value)}
+                  
                 />
               </Grid>
               <Grid item xs={12}>
@@ -157,6 +193,7 @@ export default function Register() {
                   name="email"
                   autoComplete="email"
                   onChange={(e) => setEmail(e.target.value)}
+                  helperText={emailError ?(<span style={{color:'red'}}>Complete Email or Inavalid email format</span>):''}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -169,6 +206,7 @@ export default function Register() {
                   id="password"
                   autoComplete="new-password"
                   onChange={(e) => setPassword(e.target.value)}
+                  helperText={passwordError ?(<span style={{color:'red'}}>Complete password</span>):''}
                 />
               </Grid>
               <Grid item xs={12}>
