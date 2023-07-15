@@ -17,8 +17,22 @@ const ListingPage = () => {
     location: '',
     salary: '',
   });
+  const [filteredJobs, setFilteredJobs] = useState([]);
 
+  function createData(title, location, salary) {
+    return { title, location, salary};
+  }
 
+  const rows = [
+    createData('Frozen yoghurt', 'Walasmulle', 100000.0),
+    createData('Ice cream sandwich','Colombo', 90000.0),
+    createData('Eclair','Colombo-07', 160000.0),
+    createData('Cupcake','Colombo-06', 37000),
+    createData('Gingerbread','Kaluthare', 16000),
+    createData('Eclair','Colombo-07', 160000.0),
+    createData('Cupcake','Colombo-06', 37000),
+    createData('Gingerbread','Kaluthare', 16000),
+  ];
 
   const handleTableClick = () => {
     setSelectedLayout('table');
@@ -46,8 +60,9 @@ const ListingPage = () => {
       try {
         const response = await axios.get('https://ceylonscrown.com/trep/GetCountryList');
         console.log(response.data);
-        console.log("sahan");
-        setJobs(response.data);
+        //  setJobs(response.data);
+        setJobs(rows);
+
       } catch (error) {
         console.error('Error fetching jobs:', error);
       }
@@ -56,7 +71,22 @@ const ListingPage = () => {
     fetchJobs();
   }, []);
 
+  useEffect(() => {
+    // Apply filters to the jobs list
+    const filteredJobs = jobs.filter((job) => {
+      const { location, salary } = filters;
+      // Check if the job matches the selected filters
+      if (
+        (location === '' || job.location === location) &&
+        (salary === '' || job.salary === salary)
+      ) {
+        return true;
+      }
+      return false;
+    });
 
+    setFilteredJobs(filteredJobs);
+  }, [jobs, filters]);
   
 
   return (
@@ -81,9 +111,9 @@ const ListingPage = () => {
 
           <Grid sm={12} lg={12}>
             {selectedLayout === 'table' ? (
-              <JobsTableLayout jobs={jobs} />
+              <JobsTableLayout jobs={filteredJobs} />
             ) : (
-              <CardDetails jobs={jobs} />
+              <CardDetails jobs={filteredJobs} />
             )}
           </Grid>
 

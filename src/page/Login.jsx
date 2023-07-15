@@ -13,7 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import {LoginImg} from '../img/loginimg.jpg';
+
 
 const defaultTheme = createTheme();
 
@@ -109,7 +109,7 @@ export default function Login() {
                     xs={false}
                     sm={4}
                     md={7}
-                    sx={{
+                    style={{
                         backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>

@@ -18,6 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -71,19 +72,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const handleLogout = () => {
-  // Handle logout logic here
-};
+
 
 // Get the logged-in person's name from the authentication system or user context
 const loggedInPersonName = 'John Doe';
 
 export default function Layout({children}) {
+  const navigate =useNavigate();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+    
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: 'flex' }}>

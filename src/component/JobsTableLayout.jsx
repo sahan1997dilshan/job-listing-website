@@ -1,36 +1,3 @@
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableCell from '@mui/material/TableCell';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-
-// const JobsTableLayout = ({ jobs }) => {
-//   return (
-//     <Table>
-//       <TableHead>
-//         <TableRow>
-//           <TableCell>Title</TableCell>
-//           <TableCell>Location</TableCell>
-//           <TableCell>Salary</TableCell>
-//           {/* Add more table headers */}
-//         </TableRow>
-//       </TableHead>
-//       <TableBody>
-        
-//           <TableRow>
-//             <TableCell>title</TableCell>
-//             <TableCell>location</TableCell>
-//             <TableCell>salary</TableCell>
-//             {/* Add more job details */}
-//           </TableRow>
-       
-//       </TableBody>
-//     </Table>
-//   );
-// };
-
-// export default JobsTableLayout;
-
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -61,19 +28,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(title, location, salary) {
-  return { title, location, salary};
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Eclair', 262, 16.0),
-  createData('Cupcake', 305, 3.7),
-  createData('Gingerbread', 356, 16.0),
-];
-
-export default function JobsTableLayout() {
+ const JobsTableLayout=(props)=> {
+  const {jobs}=props;
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -85,7 +41,7 @@ export default function JobsTableLayout() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {jobs.map((row) => (
             <StyledTableRow key={row.title}>
               <StyledTableCell component="th" scope="row">
                 {row.title}
@@ -101,3 +57,4 @@ export default function JobsTableLayout() {
     </TableContainer>
   );
 }
+export default JobsTableLayout;
