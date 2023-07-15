@@ -77,11 +77,11 @@ export default function Login() {
                 const sessionToken = data.token;
                 localStorage.setItem('sessionToken', sessionToken);
                 navigate('/jobpostform');
-                // Perform further actions on successful login
+                
             })
             .catch((error) => {
                 console.error('Error occurred during login:', error);
-                // Handle error or login failure
+                
             });
        
     };

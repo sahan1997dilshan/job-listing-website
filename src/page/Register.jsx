@@ -27,7 +27,7 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 
 const defaultTheme = createTheme();
 
@@ -102,12 +102,12 @@ export default function Register() {
       })
       .then((data) => {
         console.log('Registered successfully:', data);
-        // Perform any further actions upon successful job publication
-        navigate('/login'); // Redirect to the jobpost or desired location
+        
+        navigate('/login'); 
       })
       .catch((error) => {
         console.error('Error occurred during job publication:', error);
-        // Handle error or failed job publication
+        
       });
   };
 

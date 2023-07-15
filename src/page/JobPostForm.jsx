@@ -26,17 +26,17 @@ const JobPostForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Prepare the data to be sent
+        
         const formData = {
             title,
             location,
             salary,
             description,
             deadline,
-            token: localStorage.getItem('sessionToken'), // Retrieve the session token from storage
+            token: localStorage.getItem('sessionToken'), 
         };
 
-        // Send the data to the server
+        
         fetch('https://ceylonscrown.com/trep/JobPublish', {
             method: 'POST',
             headers: {
@@ -53,12 +53,11 @@ const JobPostForm = () => {
             })
             .then((data) => {
                 console.log('Job published successfully:', data);
-                // Perform any further actions upon successful job publication
-                navigate('/listingpage'); // Redirect to the listing page or desired location
+                navigate('/listingpage'); 
             })
             .catch((error) => {
                 console.error('Error occurred during job publication:', error);
-                // Handle error or failed job publication
+                
             });
     };
 

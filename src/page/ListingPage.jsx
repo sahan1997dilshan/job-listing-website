@@ -55,7 +55,7 @@ const ListingPage = () => {
 
 
   useEffect(() => {
-    // Fetch jobs list from the API endpoint
+    
     const fetchJobs = async () => {
       try {
         const response = await axios.get('https://ceylonscrown.com/trep/JobsList');
@@ -72,10 +72,10 @@ const ListingPage = () => {
   }, []);
 
   useEffect(() => {
-    // Apply filters to the jobs list
+    
     const filteredJobs = jobs.filter((job) => {
       const { location, salary } = filters;
-      // Check if the job matches the selected filters
+      
       if (
         (location === '' || job.location === location) &&
         (salary === '' || job.salary === salary)
