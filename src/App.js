@@ -1,23 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import React from 'react';
+import ListingPage from './page/ListingPage';
+import Login from './page/Login';
+import Register from './page/Register';
+import JobPostForm from './page/JobPostForm';
+import CardDetails from './component/CardDetails';
+import JobsTableLayout from './component/JobsTableLayout';
+import Layout from './layout/Layout';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     <BrowserRouter>
+        <Routes>
+          <Route exact path="/"          element={<Register/>}/>
+          <Route path='/login'           element={<Login/>} />
+          <Route path='/register'        element={<Register/>} />
+          <Route path='/listingpage'     element={<ListingPage/>}/>
+          <Route path='/jobpostform'     element={<JobPostForm/>}/>
+          <Route path='/carddetails'     element={<CardDetails/>}/>
+          <Route path='/jobstablelayout' element={<JobsTableLayout/>}/>
+          <Route path='/layout'          element={<Layout/>}/>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
