@@ -1,7 +1,9 @@
 import React, { Component, useEffect, useState } from 'react';
 import CardDetails from '../component/CardDetails';
+import CardDetails2 from '../component/CardDetails2';
 import axios from 'axios';
 import JobsTableLayout from '../component/JobsTableLayout';
+import JobSearch from '../component/JobSearch';
 import JobFilter from '../component/JobFilter';
 import Layout from '../layout/Layout';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -18,20 +20,22 @@ const ListingPage = () => {
     salary: '',
   });
   const [filteredJobs, setFilteredJobs] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  
 
-  function createData(title, location, salary) {
-    return { title, location, salary};
+  function createData(name,title, location, salary) {
+    return { name,title, location, salary};
   }
 
   const rows = [
-    createData('Frozen yoghurt', 'Walasmulle', 100000.0),
-    createData('Ice cream sandwich','Colombo', 90000.0),
-    createData('Eclair','Colombo-07', 160000.0),
-    createData('Cupcake','Colombo-06', 37000),
-    createData('Gingerbread','Kaluthare', 16000),
-    createData('Eclair','Colombo-07', 160000.0),
-    createData('Cupcake','Colombo-06', 37000),
-    createData('Gingerbread','Kaluthare', 16000),
+    createData('Sahan Dilshan','DevOps', 'Walasmulle', 100000.0),
+    createData('Navod Shehan','Developer','Colombo', 90000.0),
+    createData('Bhashitha Ranasinghe','Engineer','Colombo-07', 160000.0),
+    createData('Thilina Madushanka','CEO','Colombo-06', 37000),
+    createData('Dilukshan Bimsara','Manager','Kaluthare', 16000),
+    createData('Dhanuka Iroshan','Student','Colombo-07', 160000.0),
+    createData('Dulanjana Weerasinghe','DevOps','Colombo-06', 37000),
+    createData('Lasith Malinga','Cricketer','Kaluthare', 16000),
   ];
 
   const handleTableClick = () => {
@@ -53,6 +57,9 @@ const ListingPage = () => {
     }));
   };
 
+  const handleSearchChange = (value) => {
+    setSearchQuery(value);
+  };
 
   useEffect(() => {
     
@@ -69,24 +76,16 @@ const ListingPage = () => {
     };
 
     fetchJobs();
-  }, []);
 
-  useEffect(() => {
-    
-    const filteredJobs = jobs.filter((job) => {
-      const { location, salary } = filters;
-      
-      if (
-        (location === '' || job.location === location) &&
-        (salary === '' || job.salary === salary)
-      ) {
-        return true;
-      }
-      return false;
-    });
+    const filtered = searchQuery
+    ? jobs.filter((job) =>
+        job.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : jobs;
+    setFilteredJobs(filtered);
+  }, [searchQuery, jobs]);
 
-    setFilteredJobs(filteredJobs);
-  }, [jobs, filters]);
+  
   
 
   return (
@@ -106,14 +105,14 @@ const ListingPage = () => {
           </Grid>
 
           <Grid sm={12} lg={2}>
-            <JobFilter filters={filters} onFilterChange={handleFilterChange} >Filter</JobFilter>
+            <JobSearch searchQuery={searchQuery} onSearchChange={handleSearchChange}/>
           </Grid>
 
           <Grid sm={12} lg={12}>
             {selectedLayout === 'table' ? (
               <JobsTableLayout jobs={filteredJobs} />
             ) : (
-              <CardDetails jobs={filteredJobs} />
+              <CardDetails2 jobs={filteredJobs} />
             )}
           </Grid>
 

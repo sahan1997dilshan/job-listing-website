@@ -35,6 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
+            <StyledTableCell>Name</StyledTableCell>
             <StyledTableCell>Title</StyledTableCell>
             <StyledTableCell align="right">Location</StyledTableCell>
             <StyledTableCell align="right">Salary</StyledTableCell>
@@ -43,10 +44,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         <TableBody>
           {jobs.map((row) => (
             <StyledTableRow key={row.title}>
-              <StyledTableCell component="th" scope="row">
-                {row.title}
-              </StyledTableCell>
-              
+              <StyledTableCell component="th" scope="row" >{row.name}</StyledTableCell>
+              <StyledTableCell  >{row.title}</StyledTableCell>
               <StyledTableCell align="right">{row.location}</StyledTableCell>
               <StyledTableCell align="right">{row.salary}</StyledTableCell>
               
