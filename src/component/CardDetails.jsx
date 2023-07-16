@@ -11,9 +11,9 @@ const CardDetails = (props) => {
 
     return (
         <div>
-            <Grid container spacing={4}  >
+            <Grid container spacing={{ xs: 1,sm:2, md: 3,lg:4 }} >
                 {jobs.map((row) => (
-                    <Grid item xs={12} sm={6} md={3} key={row.title} >
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={row.title} >
                         <Card
                             sx={{
                                 width: '100%',
@@ -45,7 +45,7 @@ const CardDetails = (props) => {
                                             <LinearProgress variant="determinate" value={87} sx={{ height: 8 }} />
                                         </Grid>
                                         <Grid item xs={3}>
-                                            <Avatar><FavoriteOutlined /></Avatar>
+                                            <Avatar><FavoriteOutlined style={{color:'pink'}} /></Avatar>
                                         </Grid>
                                     </Grid>
                                 </Grid>
@@ -104,11 +104,11 @@ const CardDetails = (props) => {
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <Button variant="contained" color="success" href="/jobpostform" fullWidth>BOOK NOW</Button>
+                                    <Button variant="outlined" color="success" href="/jobpostform" fullWidth style={{ fontWeight: 'bold', color: 'blue' }}>BOOK NOW</Button>
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <Button variant="contained" color="error" fullWidth>PENCIL</Button>
+                                    <Button variant="outlined" color="error" fullWidth style={{ fontWeight: 'bold', color: 'blue' }}>PENCIL</Button>
                                 </Grid>
 
                                 <Grid item xs={12}>

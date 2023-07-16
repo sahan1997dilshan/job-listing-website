@@ -38,6 +38,7 @@ export default function Register() {
   const [lastname, setLastName] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
+  const [postalcode,setPostalCode] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -177,9 +178,21 @@ export default function Register() {
                   optional
                   fullWidth
                   id="city"
-                  label="City"
+                  label="City(optional)"
                   name="city"
                   autoComplete="city"
+                  onChange={(e) => setCity(e.target.value)}
+                  
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  optional
+                  fullWidth
+                  id="postalcode"
+                  label="Postal Code(optional)"
+                  name="postalcode"
+                  autoComplete="postalcode"
                   onChange={(e) => setCity(e.target.value)}
                   
                 />

@@ -28,14 +28,14 @@ const ListingPage = () => {
   }
 
   const rows = [
-    createData('Sahan Dilshan', 'DevOps', 'Walasmulle', 100000.0),
-    createData('Navod Shehan', 'Developer', 'Colombo', 90000.0),
-    createData('Bhashitha', 'Engineer', 'Colombo-07', 160000.0),
-    createData('Thilina ', 'CEO', 'Colombo-06', 37000),
-    createData('Dilukshan', 'Engineer', 'Kaluthare', 16000),
-    createData('Dhanuka Iroshan', 'DevOps', 'Colombo-07', 160000.0),
-    createData('Dulanjana', 'DevOps', 'Colombo-06', 37000),
-    createData('Lasith', 'Developer', 'Kaluthare', 16000),
+    createData('Sahan Dilshan', 'DevOps', 'Walasmulle', '$1000'),
+    createData('Navod Shehan', 'Developer', 'Colombo', '$900'),
+    createData('Bhashitha', 'Engineer', 'Colombo-07', '$1600'),
+    createData('Thilina ', 'CEO', 'Colombo-06', '$1600'),
+    createData('Dilukshan', 'Engineer', 'Kaluthare', '$16000'),
+    createData('Dhanuka Iroshan', 'DevOps', 'Colombo-07', '$16000'),
+    createData('Dulanjana', 'DevOps', 'Colombo-06', '$37000'),
+    createData('Lasith', 'Developer', 'Kaluthare', '$37000'),
   ];
 
   const handleTableClick = () => {
