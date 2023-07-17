@@ -104,7 +104,7 @@ const CardDetails = (props) => {
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                    <Button variant="outlined" color="success" href="/jobpostform" fullWidth style={{ fontWeight: 'bold', color: 'blue' }}>BOOK NOW</Button>
+                                    <Button variant="outlined" color="success" href="/jobpostform" fullWidth style={{ fontWeight: 'bold', color: 'blue' }} sx={{'&:hover': {backgroundColor: 'purple',},}}>BOOK NOW</Button>
                                 </Grid>
 
                                 <Grid item xs={6}>

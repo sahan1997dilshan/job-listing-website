@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { mainListItems, secondaryListItems } from './ListItems';
 
 
 
@@ -69,17 +70,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 const defaultTheme = createTheme();
 
 
 
-// Get the logged-in person's name from the authentication system or user context
+
 const loggedInPersonName = 'John Doe';
 
 export default function Layout({children}) {
   const navigate =useNavigate();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -96,7 +97,7 @@ export default function Layout({children}) {
           
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '24px', 
             }}
           >
            <IconButton
@@ -146,9 +147,13 @@ export default function Layout({children}) {
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-
           <Divider />
-         
+          <List component="nav">
+            {mainListItems}
+            <Divider sx={{ my: 1 }} />
+            {secondaryListItems}
+          </List>
+        
         </Drawer>
 
         <Box

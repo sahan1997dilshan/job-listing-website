@@ -96,32 +96,50 @@ const ListingPage = () => {
     <div>
       <Layout>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2, lg: 2 }}>
-          
-            <Grid sm={12} lg={10}>
-              <ButtonGroup
-                disableElevation
-                variant="contained"
-                aria-label="Disabled elevation buttons"
-              >
-                <Button onClick={handleTableClick}>Table Layout</Button>
-                <Button onClick={handleCardClick}>Card Layout</Button>
-              </ButtonGroup>
-            </Grid>
 
-            <Grid sm={12} lg={2}>
-              <JobSearch searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-            </Grid>
-          
+          <Grid sm={12} lg={10}>
+            <ButtonGroup
+              disableElevation
+              variant="outlined"
+              aria-label="outlined button group"
+              color="secondary"
+            >
+              <Button
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'purple',
+                  },
+                }}
+                onClick={handleTableClick}>Table Layout
+              </Button>
 
-          
-            <Grid sm={12} lg={12}>
-              {selectedLayout === 'table' ? (
-                <JobsTableLayout jobs={filteredJobs} />
-              ) : (
-                <CardDetails jobs={filteredJobs} />
-              )}
-            </Grid>
-          
+              <Button
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'purple',
+                  },
+                }}
+                onClick={handleCardClick}>Card Layout
+              </Button>
+            </ButtonGroup>
+          </Grid>
+
+
+
+          <Grid sm={12} lg={2}>
+            <JobSearch searchQuery={searchQuery} onSearchChange={handleSearchChange} />
+          </Grid>
+
+
+
+          <Grid sm={12} lg={12}>
+            {selectedLayout === 'table' ? (
+              <JobsTableLayout jobs={filteredJobs} />
+            ) : (
+              <CardDetails jobs={filteredJobs} />
+            )}
+          </Grid>
+
 
 
         </Grid>
