@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -38,11 +39,11 @@ export default function Register() {
   const [lastname, setLastName] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
-  const [postalcode,setPostalCode] = useState('');
+  const [postalcode, setPostalCode] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-
+  const [error, setError] = useState('');
   const [firstnameError, setFirstNameError] = useState(false);
   const [lastnameError, setLastNameError] = useState(false);
   const [countryError, setCountryError] = useState(false);
@@ -55,7 +56,7 @@ export default function Register() {
   };
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!firstname || !lastname || !country || !email || !password) {
@@ -74,7 +75,7 @@ export default function Register() {
     if (!validateEmail(email)) {
       setEmailError(true);
       return;
-  }
+    }
 
 
     const formData = {
@@ -82,37 +83,97 @@ export default function Register() {
       lastname,
       country,
       city,
+      postalcode,
       email,
       password,
     };
 
 
-    fetch('https://ceylonscrown.com/trep/Register', {
-      method: 'POST',
+    // fetch('https://ceylonscrown.com/trep/Register', {
+    //   method: 'POST',
+    //   body: formData,
+
+    // })
+    //   .then((response) => {
+    //     if (response.ok) {
+    //       console.log(response);
+    //       return response.json();
+    //     } else {
+    //       throw new Error('Faild Registration1');
+    //     }
+    //   })
+    //   .then((data) => {
+    //     console.log(data.isSuccess);
+    //     if(data.isSuccess===true){
+    //       console.log('Registered successfully:', data.isSuccess);
+    //       navigate('/login'); 
+    //     }else{
+    //       throw new Error('Faild Registration2:'+data.errorTitle+data.errorDescription);
+    //     }
+
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error occurred during job publication3:', error);
+    //     setError("Registration failed. Please try again."+error);
+
+    //   });
+
+    // console.log(formData);
+    const data = new FormData();
+    data.append('name', 'John Doe');
+    data.append('email', 'johndoe@example.com');
+    await axios.post('https://ceylonscrown.com/trep/Register', data, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
-      body: JSON.stringify(formData),
     })
       .then((response) => {
-        if (response.ok) {
-          return response.json();
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response);
+          return response.data;
         } else {
-          throw new Error('Faild Registration');
+          throw new Error('Failed Registration1');
         }
       })
       .then((data) => {
-        console.log('Registered successfully:', data);
-        
-        navigate('/login'); 
+        console.log(data.isSuccess);
+        if (data.isSuccess === true) {
+          console.log('Registered successfully:', data.isSuccess);
+          navigate('/login');
+        } else {
+          throw new Error('Failed Registration2: ' + data.errorTitle + data.errorDescription);
+        }
       })
       .catch((error) => {
-        console.error('Error occurred during job publication:', error);
-        
+        console.error('Error occurred during registration3:', error);
+        setError("Registration failed. Please try again." + error);
       });
+
+
   };
 
+  const handleDataSubmit = async () => {
+    const data = new FormData();
+    data.append('firstname', 'Sahan');
+    data.append('email', 'd1sahan1997@gmail.com');
+    data.append('lastname','dilshan');
+    data.append('country','Sri lanka');
+    data.append('city','');
+    data.append('postalcode','');
+    data.append('password','Ucsc@1997');
+    await axios.post('https://ceylonscrown.com/trep/Register', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then((response) => {
+          console.log(response);
+        
+      })
 
+
+
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -129,6 +190,7 @@ export default function Register() {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
+          <Button onClick={handleDataSubmit}>temp</Button>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -144,7 +206,7 @@ export default function Register() {
                   id="firstName"
                   label="First Name"
                   onChange={(e) => setFirstName(e.target.value)}
-                  helperText={firstnameError ?(<span style={{color:'red'}}>Complete First name</span>):''}
+                  helperText={firstnameError ? (<span style={{ color: 'red' }}>Complete First name</span>) : ''}
                   autoFocus
                 />
               </Grid>
@@ -158,7 +220,7 @@ export default function Register() {
                   name="lastName"
                   autoComplete="family-name"
                   onChange={(e) => setLastName(e.target.value)}
-                  helperText={lastnameError ?(<span style={{color:'red'}}>Complete Last name</span>):''}
+                  helperText={lastnameError ? (<span style={{ color: 'red' }}>Complete Last name</span>) : ''}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -170,7 +232,7 @@ export default function Register() {
                   name="country"
                   autoComplete="country"
                   onChange={(e) => setCountry(e.target.value)}
-                  helperText={countryError ?(<span style={{color:'red'}}>Complete Country name</span>):''}
+                  helperText={countryError ? (<span style={{ color: 'red' }}>Complete Country name</span>) : ''}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -182,7 +244,7 @@ export default function Register() {
                   name="city"
                   autoComplete="city"
                   onChange={(e) => setCity(e.target.value)}
-                  
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -194,7 +256,7 @@ export default function Register() {
                   name="postalcode"
                   autoComplete="postalcode"
                   onChange={(e) => setCity(e.target.value)}
-                  
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -206,7 +268,7 @@ export default function Register() {
                   name="email"
                   autoComplete="email"
                   onChange={(e) => setEmail(e.target.value)}
-                  helperText={emailError ?(<span style={{color:'red'}}>Complete Email or Inavalid email format</span>):''}
+                  helperText={emailError ? (<span style={{ color: 'red' }}>Complete Email or Inavalid email format</span>) : ''}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -219,7 +281,7 @@ export default function Register() {
                   id="password"
                   autoComplete="new-password"
                   onChange={(e) => setPassword(e.target.value)}
-                  helperText={passwordError ?(<span style={{color:'red'}}>Complete password</span>):''}
+                  helperText={passwordError ? (<span style={{ color: 'red' }}>Complete password</span>) : ''}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -229,6 +291,8 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
+
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <Button
               type="submit"
               fullWidth
