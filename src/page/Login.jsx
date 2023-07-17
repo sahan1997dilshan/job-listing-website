@@ -14,20 +14,23 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import LoginImg from '../img/loginimg.jpg';
+import axios from "axios";
 
 
 const defaultTheme = createTheme();
 
 export default function Login() {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
+
+    const [errors, setErrors] = useState({});
+    const [submiterror, setSubmiterror] = useState('');
     const navigate = useNavigate();
 
-
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
 
 
     const validateEmail = (value) => {
@@ -35,71 +38,72 @@ export default function Login() {
         return emailRegex.test(value);
     };
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }));
+    };
 
 
-
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
-        if (!email || !password) {
-            if (!password)
-                setPasswordError(true);
-            if (!email)
-                setEmailError(true);
+        const requiredFields = ["email", "password"];
+
+        const newErrors = {};
+
+        requiredFields.forEach((field) => {
+            if (!formData[field]) {
+                newErrors[field] = true;
+            }
+        });
+
+        if (!validateEmail(formData.email)) {
+            newErrors.email = true;
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
             return;
         }
-        setPasswordError(false);
-        setEmailError(false);
 
-        if (!validateEmail(email)) {
-            setEmailError(true);
-            return;
-        }
-        setEmailError(false);
-
-        
-        
-        fetch('https://ceylonscrown.com/trep/Login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Login failed');
+        try {
+            const response = await axios.post(
+                "https://ceylonscrown.com/trep/Login",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
                 }
-            })
-            .then((data) => {
-                console.log('Login successful:', data);
-                const sessionToken = data.token;
-                localStorage.setItem('sessionToken', sessionToken);
-                navigate('/jobpostform');
-                
-            })
-            .catch((error) => {
-                console.error('Error occurred during login:', error);
-                
-            });
-       
+            );
+
+            if (response.status >= 200 && response.status < 300) {
+                const data = response.data;
+                console.log("data:", data);
+                if (data.isSuccess === true) {
+                    console.log("Registered successfully:", data.isSuccess);
+                    sessionStorage.setItem('token', data.token);
+                    navigate('/jobpostform');
+                } else {
+                    throw new Error(
+                        "Failed Registration2: " + data.errorTitle + data.errorDescription
+                    );
+                }
+            } else {
+                throw new Error("Failed Login");
+            }
+        } catch (error) {
+            console.error("Error occurred during login:", error);
+            setSubmiterror("Registration failed. Please try again.");
+
+        }
+
     };
 
-
-
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    };
-
-
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-    
 
     return (
 
@@ -112,7 +116,7 @@ export default function Login() {
                     sm={4}
                     md={7}
                     style={{
-                        backgroundImage:`url(${LoginImg})`,
+                        backgroundImage: `url(${LoginImg})`,
                         backgroundRepeat: 'no-repeat',
                         backgroundColor: (t) =>
                             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -145,9 +149,10 @@ export default function Login() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={formData.email}
                                 autoFocus
-                                onChange={handleEmailChange}
-                                helperText={emailError ?(<span style={{color:'red'}}>Invalid email format or Enter email</span>)  : ''}
+                                onChange={handleChange}
+                                error={errors.email}
                             />
                             <TextField
                                 margin="normal"
@@ -158,13 +163,15 @@ export default function Login() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                onChange={handlePasswordChange}
-                                helperText={passwordError ? (<span style={{color:'red'}}>Enter the password</span>) : ''}
+                                value={formData.password}
+                                onChange={handleChange}
+                                error={errors.password}
                             />
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
+                            {submiterror && <p style={{ color: 'red' }}>{submiterror}</p>}
                             <Button
                                 type="submit"
                                 fullWidth
