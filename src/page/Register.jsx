@@ -68,8 +68,6 @@ function Register() {
       return;
     }
 
-    // Validate the last required field
-
 
     try {
       const response = await axios.post(
