@@ -13,52 +13,86 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from "axios";
 
 const JobPostForm = () => {
-    const [title, setTitle] = useState('');
-    const [location, setLocation] = useState('');
-    const [salary, setSalary] = useState('');
-    const [description, setDescription] = useState('');
-    const [deadline, setDeadline] = useState('');
-
     const navigate = useNavigate();
 
-    const handleSubmit = (event) => {
+    const [formData, setFormData] = useState({
+        title: "",
+        location: "",
+        salary: "",
+        description: "",
+        postalCode: "",
+        deadline: "",
+        token: sessionStorage.getItem('token')
+    });
+
+    const [errors, setErrors] = useState({});
+    const [submiterror, setSubmiterror] = useState('');
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit =async (event) => {
         event.preventDefault();
 
-        
-        const formData = {
-            title,
-            location,
-            salary,
-            description,
-            deadline,
-            token: localStorage.getItem('sessionToken'), 
-        };
+        const requiredFields = ["title", "location","description","deadline", "token"];
+        const newErrors = {};
+
+
+        requiredFields.forEach((field) => {
+            if (!formData[field]) {
+                newErrors[field] = true;
+            }
+        });
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
+            return;
+        }
+        const token = sessionStorage.getItem('token');
+        console.log(token);
+
+
+        try {
+            const response = await axios.post(
+                "https://ceylonscrown.com/trep/JobPublish",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
+
+            if (response.status >= 200 && response.status < 300) {
+                const data = response.data;
+                console.log("data:", data);
+                if (data.isSuccess === true) {
+                    console.log("Job posted is successfully:", data.isSuccess);
+                    navigate("/listingpage");
+                } else {
+                    throw new Error(
+                        "faild: " + data.errorTitle + data.errorDescription
+                    );
+                }
+            } else {
+                throw new Error("Failed ");
+            }
+        } catch (error) {
+            console.error("Error occurred during registration:", error);
+            setSubmiterror("Job post fail");
+
+        }
 
         
-        fetch('https://ceylonscrown.com/trep/JobPublish', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Failed to publish job');
-                }
-            })
-            .then((data) => {
-                console.log('Job published successfully:', data);
-                navigate('/listingpage'); 
-            })
-            .catch((error) => {
-                console.error('Error occurred during job publication:', error);
-                
-            });
     };
 
     const defaultTheme = createTheme();
@@ -87,29 +121,29 @@ const JobPostForm = () => {
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
-                            
+
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    value={title}
+                                    value={formData.title}
                                     label="Title"
                                     name="title"
                                     autoComplete='title'
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={handleChange}
 
                                 />
                             </Grid>
-                            
+
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    value={location}
+                                    value={formData.location}
                                     label="Location"
                                     name="location"
                                     autoComplete="location"
-                                    onChange={(e) => setLocation(e.target.value)}
+                                    onChange={handleChange}
                                 />
                             </Grid>
 
@@ -119,9 +153,9 @@ const JobPostForm = () => {
                                     fullWidth
                                     name="salary"
                                     label="Salary"
-                                    value={salary}
+                                    value={formData.salary}
                                     autoComplete="salary"
-                                    onChange={(e) => setSalary(e.target.value)}
+                                    onChange={handleChange}
                                 />
                             </Grid>
 
@@ -132,9 +166,9 @@ const JobPostForm = () => {
                                     multiline
                                     name="description"
                                     label="Description"
-                                    value={description}
+                                    value={formData.description}
                                     autoComplete="description"
-                                    onChange={(e) => setDescription(e.target.value)}
+                                    onChange={handleChange}
                                 />
                             </Grid>
 
@@ -144,20 +178,21 @@ const JobPostForm = () => {
                                     fullWidth
                                     name="deadline"
                                     label="Recruitment Deadline"
-                                    value={deadline}
+                                    value={formData.deadline}
                                     autoComplete="deadline"
-                                    onChange={(e) => setDeadline(e.target.value)}
+                                    onChange={handleChange}
                                 />
                             </Grid>
-                           
+
                         </Grid>
+                        {submiterror && <p style={{ color: 'red' }}>{submiterror}</p>}
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                           Publish Job
+                            Publish Job
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
@@ -172,7 +207,7 @@ const JobPostForm = () => {
             </Container>
         </ThemeProvider>
 
-        
+
     );
 };
 

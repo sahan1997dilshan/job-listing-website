@@ -76,10 +76,10 @@ const ListingPage = () => {
     };
 
     fetchJobs();
-    //search part....
+    
 
   }, []);
-
+//search part....
   useEffect(() => {
     const filtered = searchQuery
       ? jobs.filter((job) =>

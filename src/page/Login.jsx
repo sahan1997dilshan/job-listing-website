@@ -28,7 +28,7 @@ export default function Login() {
         email: "",
         password: ""
     });
-
+    
 
     const validateEmail = (value) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -46,7 +46,7 @@ export default function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+  
         const requiredFields = ["email", "password"];
 
         const newErrors = {};
@@ -68,6 +68,7 @@ export default function Login() {
         }
 
         try {
+            console.log('try block')
             const response = await axios.post(
                 "https://ceylonscrown.com/trep/Login",
                 formData,
@@ -82,12 +83,12 @@ export default function Login() {
                 const data = response.data;
                 console.log("data:", data);
                 if (data.isSuccess === true) {
-                    console.log("Registered successfully:", data.isSuccess);
+                    console.log("Login successfully:", data.isSuccess);
                     sessionStorage.setItem('token', data.token);
                     navigate('/jobpostform');
                 } else {
                     throw new Error(
-                        "Failed Registration2: " + data.errorTitle + data.errorDescription
+                        "Failed Login: " + data.errorTitle + data.errorDescription
                     );
                 }
             } else {
@@ -137,6 +138,7 @@ export default function Login() {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
+                        {/* <Button onClick={handleSubmit}>Click</Button> */}
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
