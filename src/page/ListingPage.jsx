@@ -26,7 +26,7 @@ const ListingPage = () => {
   function createData(name, title, location, salary) {
     return { name, title, location, salary };
   }
-
+// this part is hard code.because some API doesn't work
   const rows = [
     createData('Sahan Dilshan', 'DevOps', 'Walasmulle', '$1000'),
     createData('Navod Shehan', 'Developer', 'Colombo', '$900'),
@@ -37,30 +37,30 @@ const ListingPage = () => {
     createData('Dulanjana', 'DevOps', 'Colombo-06', '$37000'),
     createData('Lasith', 'Developer', 'Kaluthare', '$37000'),
   ];
-
+//tavle component handle this function
   const handleTableClick = () => {
     setSelectedLayout('table');
   };
 
 
-
+//card component handle this function
   const handleCardClick = () => {
     setSelectedLayout('card');
   };
 
 
-
+//filter component handle this function
   const handleFilterChange = (name, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [name]: value,
     }));
   };
-
+//search component handle this function
   const handleSearchChange = (value) => {
     setSearchQuery(value);
   };
-
+//API get request
   useEffect(() => {
 
     const fetchJobs = async () => {
@@ -98,6 +98,7 @@ const ListingPage = () => {
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2, lg: 2 }}>
 
           <Grid sm={12} lg={10}>
+            {/* button group coponent */}
             <ButtonGroup
               disableElevation
               variant="outlined"
@@ -125,13 +126,13 @@ const ListingPage = () => {
           </Grid>
 
 
-
+          {/* search component */}
           <Grid sm={12} lg={2}>
             <JobSearch searchQuery={searchQuery} onSearchChange={handleSearchChange} />
           </Grid>
 
 
-
+          {/* card component and table component */}
           <Grid sm={12} lg={12}>
             {selectedLayout === 'table' ? (
               <JobsTableLayout jobs={filteredJobs} />

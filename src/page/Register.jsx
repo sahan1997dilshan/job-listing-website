@@ -70,6 +70,7 @@ function Register() {
 
 
     try {
+      //API request for the registration
       const response = await axios.post(
         "https://ceylonscrown.com/trep/Register",
         formData,
@@ -81,9 +82,11 @@ function Register() {
       );
 
       if (response.status >= 200 && response.status < 300) {
+        //check responce
         const data = response.data;
-        console.log("data:", data);
         if (data.isSuccess === true) {
+          //if responce okay redirect to the login page
+          
           console.log("Registered successfully:", data.isSuccess);
           navigate("/login");
         } else {
@@ -100,7 +103,7 @@ function Register() {
 
     }
   };
-
+//registration form
   return (
     <ThemeProvider theme={createTheme()}>
       <Container component="main" maxWidth="xs">

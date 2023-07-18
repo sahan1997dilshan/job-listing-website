@@ -29,12 +29,12 @@ export default function Login() {
         password: ""
     });
     
-
+//email validate function
     const validateEmail = (value) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(value);
     };
-
+//handle form data
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
@@ -43,10 +43,10 @@ export default function Login() {
         }));
     };
 
-
+//handle form submit button
     const handleSubmit = async (event) => {
         event.preventDefault();
-  
+       
         const requiredFields = ["email", "password"];
 
         const newErrors = {};
@@ -56,7 +56,7 @@ export default function Login() {
                 newErrors[field] = true;
             }
         });
-
+//check email validation
         if (!validateEmail(formData.email)) {
             newErrors.email = true;
         }
@@ -68,7 +68,7 @@ export default function Login() {
         }
 
         try {
-            console.log('try block')
+            //API request 
             const response = await axios.post(
                 "https://ceylonscrown.com/trep/Login",
                 formData,
@@ -80,10 +80,11 @@ export default function Login() {
             );
 
             if (response.status >= 200 && response.status < 300) {
+                //check responce 
                 const data = response.data;
-                console.log("data:", data);
                 if (data.isSuccess === true) {
                     console.log("Login successfully:", data.isSuccess);
+                    //if the responce okay redirect to the jobPostForm and store the session id
                     sessionStorage.setItem('token', data.token);
                     navigate('/jobpostform');
                 } else {
@@ -102,7 +103,7 @@ export default function Login() {
 
     };
 
-
+//this is login form...
     return (
 
         <ThemeProvider theme={defaultTheme}>
@@ -138,7 +139,7 @@ export default function Login() {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        {/* <Button onClick={handleSubmit}>Click</Button> */}
+                        
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
