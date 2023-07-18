@@ -20,9 +20,6 @@ import axios from "axios";
 const defaultTheme = createTheme();
 
 export default function Login() {
-
-    
-
     const [errors, setErrors] = useState({});
     const [submiterror, setSubmiterror] = useState('');
     const navigate = useNavigate();
